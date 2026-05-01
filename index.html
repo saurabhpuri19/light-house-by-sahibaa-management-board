@@ -2056,8 +2056,8 @@
     function sendEmail(task, client) {
         var due  = fmtDate(task.dueDate);
         var body =
-            "Hello,\n\nI hope this email finds you well. I wanted to inform you that a new task has been created and assigned to you.\n\n- " +
-            task.description + " (Task Due Date: " + due + ")" +
+            "Hello,\n\nI hope this email finds you well. I wanted to inform you that a new task has been created and assigned to you." +
+            "\n\n Task Details: " + task.description + "\nTask Due Date: " + due + ")" +
             "\n\nPlease take a moment to review the details at your convenience. If you have any questions, need clarification, or require any assistance, feel free to reach out \u2014 I\u2019m here to help.\n\nLooking forward to your update on the progress.\n\nRegards\nSahibaa";
         var params = {
             to_email  : client.email,
@@ -2084,7 +2084,7 @@
                 await sendEmail(task, client);
                 sent++;
                 toast(
-                    "✓ Email sent to " +
+                    "✓ Email sent successfully." +
                     (clientList.length > 1 ? " (" + sent + "/" + clientList.length + ")" : ""),
                     "success"
                 );
