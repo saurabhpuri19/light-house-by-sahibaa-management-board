@@ -1,15 +1,15 @@
 # Management Board - The Light House
 
-The application is built on React.js and plain HTML. This app is compatible with desktop and tablet 
+The application is built on React.js and plain HTML 5. This app is compatible with desktop and tablet 
 and a mobile phone.
 
 # Deployment
 
 Register with www.playcode.io and copy-paste the index.html file from the repository to the new project
-created in playcode.io. Publish it and view the result. Under preview, one can view different views
+created in playcode.io and publish it to view the result. Under preview, one can view different views
 of the app like desktop, tablet & mobile.
 
-The app uses SUPABASE Database to store/update/delete records. Supabase is free for 500 MB
+The app uses Supabase Database to store/update/delete records. Supabase is free for 500 MB
 and it has to table client_tbl & task_tbl
 
 ## Client Table Schema
