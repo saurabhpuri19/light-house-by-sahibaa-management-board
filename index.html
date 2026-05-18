@@ -10,6 +10,8 @@
             rel="stylesheet"
     />
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
     <style>
         * {
             box-sizing: border-box;
@@ -838,6 +840,225 @@
                 transform: rotate(360deg);
             }
         }
+
+        /* ── RECEIPT TAB ─────────────────────────────────────────── */
+        .rcp-card {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            margin-bottom: 16px;
+        }
+        .rcp-section {
+            padding: 20px 22px;
+            border-bottom: 1px solid var(--border);
+        }
+        .rcp-section:last-child { border-bottom: none; }
+        .rcp-section-label {
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.09em;
+            color: var(--txt3);
+            margin-bottom: 14px;
+        }
+        .rcp-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+        .rcp-field { display: flex; flex-direction: column; gap: 6px; }
+        .rcp-field label {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--txt2);
+        }
+        .rcp-field input {
+            width: 100%;
+            font-size: 14px;
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            color: var(--txt);
+            border-radius: 10px;
+            padding: 10px 13px;
+            outline: none;
+            font-family: "DM Sans", sans-serif;
+            transition: border 0.15s;
+        }
+        .rcp-field input:focus { border-color: var(--lime); }
+        .rcp-uuid {
+            font-family: "DM Mono", monospace;
+            font-size: 11.5px;
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 10px 13px;
+            color: var(--lime);
+            letter-spacing: 0.03em;
+            user-select: all;
+            cursor: default;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .rcp-date-display {
+            font-size: 14px;
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 10px 13px;
+            color: var(--txt);
+            font-family: "DM Sans", sans-serif;
+            outline: none;
+            width: 100%;
+            cursor: pointer;
+            transition: border 0.15s;
+        }
+        .rcp-date-display:focus { border-color: var(--lime); }
+        /* Items table */
+        .rcp-table-wrap {
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .rcp-table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+        }
+        .rcp-table thead {
+            background: var(--bg3);
+        }
+        .rcp-table thead th {
+            padding: 10px 12px;
+            text-align: left;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            color: var(--txt3);
+            border-bottom: 1px solid var(--border);
+        }
+        .rcp-table thead th:first-child { width: 48px; text-align: center; }
+        .rcp-table thead th:last-child  { width: 130px; text-align: right; }
+        .rcp-table thead th.rcp-del-col { width: 44px; }
+        .rcp-table tbody tr { border-bottom: 1px solid var(--border); }
+        .rcp-table tbody tr:last-child { border-bottom: none; }
+        .rcp-table tbody td {
+            padding: 4px 6px;
+            vertical-align: middle;
+        }
+        .rcp-table tbody td:first-child {
+            text-align: center;
+            color: var(--txt3);
+            font-size: 12px;
+            font-family: "DM Mono", monospace;
+            padding-left: 12px;
+        }
+        .rcp-table tbody td:nth-child(3) { text-align: right; padding-right: 6px; }
+        .rcp-table tbody td.rcp-del-col  { text-align: center; padding: 4px; }
+        .rcp-table tbody td input {
+            width: 100%;
+            background: transparent;
+            border: 1px solid transparent;
+            border-radius: 6px;
+            padding: 7px 9px;
+            font-family: "DM Sans", sans-serif;
+            font-size: 13.5px;
+            color: var(--txt);
+            transition: border-color 0.15s, background 0.15s;
+            outline: none;
+        }
+        .rcp-table tbody td input:focus {
+            background: var(--bg3);
+            border-color: var(--lime);
+        }
+        .rcp-table tbody td input.rcp-amt { text-align: right; }
+        /* Total */
+        .rcp-total-row {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 14px;
+            margin-top: 16px;
+            padding: 14px 16px;
+            background: var(--lime-dim);
+            border: 1px solid #4a6000;
+            border-radius: 10px;
+        }
+        .rcp-total-label {
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--lime2);
+        }
+        .rcp-total-val {
+            font-family: "DM Mono", monospace;
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--lime);
+            letter-spacing: -0.5px;
+        }
+        .rcp-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            padding: 18px 22px;
+            background: var(--bg3);
+            border-top: 1px solid var(--border);
+        }
+        .rcp-hint {
+            font-size: 12px;
+            color: var(--txt3);
+            font-family: "DM Mono", monospace;
+        }
+        .rcp-gen-btn {
+            padding: 11px 22px;
+            font-size: 13.5px;
+            background: var(--lime);
+            color: #000;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 700;
+            font-family: "DM Sans", sans-serif;
+            transition: opacity 0.15s, transform 0.1s;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+        .rcp-gen-btn:active { transform: scale(0.97); }
+        .rcp-gen-btn:hover  { opacity: 0.9; }
+        .rcp-row-del {
+            width: 30px;
+            height: 30px;
+            border: 1px solid var(--red-border);
+            background: var(--red-bg);
+            border-radius: 7px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #c85050;
+            font-size: 13px;
+            flex-shrink: 0;
+            transition: background 0.1s;
+        }
+        .rcp-row-del:hover { background: #3a0000; }
+        .rcp-empty {
+            text-align: center;
+            padding: 36px 20px;
+            color: var(--txt3);
+            font-size: 13px;
+        }
+        @media (max-width: 600px) {
+            .rcp-grid { grid-template-columns: 1fr; }
+        }
     </style>
 </head>
 <body>
@@ -926,6 +1147,7 @@
             <button class="nav-btn active" onclick="showTab('dashboard',this)">Dashboard</button>
             <button class="nav-btn" onclick="showTab('clients',this)">Clients</button>
             <button class="nav-btn" onclick="showTab('tasks',this)">Tasks</button>
+            <button class="nav-btn" onclick="showTab('receipt',this)">Receipt Generator</button>
             <button class="nav-btn" onclick="showTab('settings',this)">Settings</button>
         </nav>
     </header>
@@ -991,11 +1213,20 @@
                 </svg>
                 Settings
             </button>
+            <button class="nav-mob-btn" id="mob-receipt" onclick="showTabMob('receipt')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                    <polyline points="14 2 14 8 20 8"/>
+                    <line x1="9" y1="13" x2="15" y2="13"/>
+                    <line x1="9" y1="17" x2="13" y2="17"/>
+                </svg>
+                Receipt
+            </button>
         </div>
     </nav>
 
     <main class="main">
-        <h2 class="task-accelerator-heading">Task Accelerator</h2>
+        <h2 class="task-accelerator-heading">Management Board</h2>
         <div id="tab-toast" class="toast"></div>
 
         <!-- DASHBOARD -->
@@ -1090,14 +1321,123 @@
                 </div>
             </div>
         </div>
+
+        <!-- RECEIPT GENERATOR -->
+        <div id="tab-receipt" class="tab-view">
+            <div class="section-hdr" style="margin-bottom:20px;">
+                <div class="section-title" style="font-size:18px;">Receipt Generator</div>
+                <button class="add-btn" onclick="rcpReset()" style="background:var(--bg3);color:var(--txt2);border:1px solid var(--border);">↺ Reset</button>
+            </div>
+
+            <div class="rcp-card">
+                <!-- Bill To -->
+                <div class="rcp-section">
+                    <div class="rcp-section-label">Bill To</div>
+                    <div class="rcp-field" style="margin-bottom:12px;">
+                        <label>Client / Company Name <span style="color:#c85050">*</span></label>
+                        <input type="text" id="rcp-client" placeholder="e.g. Sunshine Wellness Clinic" autocomplete="off" />
+                    </div>
+                    <div class="rcp-field">
+                        <label style="display:flex;align-items:center;gap:6px;">
+                            Client / Company Details
+                            <span style="font-size:10px;font-weight:400;color:var(--txt3);text-transform:none;letter-spacing:0;">&#8212; optional</span>
+                        </label>
+                        <textarea id="rcp-details" rows="3" placeholder="e.g. 123 Main Street, New Delhi | +91-9876543210 | GST: 07XXXXX…" style="width:100%;font-family:'DM Sans',sans-serif;font-size:13.5px;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:10px 13px;color:var(--txt);resize:vertical;outline:none;transition:border 0.15s;line-height:1.5;" onfocus="this.style.borderColor='var(--lime)'" onblur="this.style.borderColor='var(--border)'"></textarea>
+                    </div>
+                </div>
+
+                <!-- Receipt Meta -->
+                <div class="rcp-section">
+                    <div class="rcp-section-label">Receipt Details</div>
+                    <div class="rcp-grid">
+                        <div class="rcp-field">
+                            <label>Receipt Number</label>
+                            <div class="rcp-uuid" id="rcp-number" title="Auto-generated UUID">—</div>
+                        </div>
+                        <div class="rcp-field">
+                            <label>Receipt Date</label>
+                            <input type="date" class="rcp-date-display" id="rcp-date" />
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Line Items -->
+                <div class="rcp-section">
+                    <div class="rcp-section-label">Line Items</div>
+                    <div class="rcp-table-wrap">
+                        <table class="rcp-table" aria-label="Therapy line items">
+                            <thead>
+                            <tr>
+                                <th>S.No#</th>
+                                <th>Therapy Description</th>
+                                <th style="text-align:center;">Sessions</th>
+                                <th style="text-align:right;">Amount (₹)</th>
+                                <th class="rcp-del-col"></th>
+                            </tr>
+                            </thead>
+                            <tbody id="rcp-items-body"></tbody>
+                        </table>
+                    </div>
+
+                    <div style="margin-top:12px;">
+                        <button class="add-btn" id="rcp-add-btn" onclick="rcpAddItem()" style="font-size:13px;padding:8px 16px;">
+                            + Add Item
+                        </button>
+                    </div>
+
+                    <div class="rcp-total-row" style="flex-direction:column;align-items:flex-end;gap:6px;padding:14px 16px;">
+                        <div style="display:flex;justify-content:space-between;width:100%;max-width:280px;">
+                            <span style="font-size:12px;color:var(--txt2);font-weight:500;">Subtotal</span>
+                            <span style="font-family:'DM Mono',monospace;font-size:13px;color:var(--txt);">₹ <span id="rcp-subtotal">0.00</span></span>
+                        </div>
+                        <div style="display:flex;justify-content:space-between;width:100%;max-width:280px;">
+                            <span style="font-size:12px;color:var(--txt2);font-weight:500;">SGST (<span id="rcp-sgst-pct">9</span>%)</span>
+                            <span style="font-family:'DM Mono',monospace;font-size:13px;color:var(--txt);">₹ <span id="rcp-sgst-amt">0.00</span></span>
+                        </div>
+                        <div style="display:flex;justify-content:space-between;width:100%;max-width:280px;">
+                            <span style="font-size:12px;color:var(--txt2);font-weight:500;">CGST (<span id="rcp-cgst-pct">9</span>%)</span>
+                            <span style="font-family:'DM Mono',monospace;font-size:13px;color:var(--txt);">₹ <span id="rcp-cgst-amt">0.00</span></span>
+                        </div>
+                        <div style="display:flex;justify-content:space-between;width:100%;max-width:280px;border-top:1px solid var(--border);padding-top:8px;margin-top:2px;">
+                            <span class="rcp-total-label">Grand Total</span>
+                            <span class="rcp-total-val" style="font-size:20px;">₹ <span id="rcp-total">0.00</span></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer -->
+                <div class="rcp-actions">
+                    <!--Added extra span to keep Generate Reciept button on right side of the pane-->
+                    <span></span>
+                    <button class="rcp-gen-btn" id="rcp-gen-btn" onclick="rcpGenerate()">
+                        <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                            <path d="M8 1v9M4.5 7l3.5 3.5L11.5 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M2 13h12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                        </svg>
+                        Generate Receipt PDF
+                    </button>
+                </div>
+            </div>
+        </div>
     </main>
 </div>
 
 <script>
-    // ── EMAILJS CONFIG (hardcoded) ───────────────────────────────
-    var EJ_PUBLIC_KEY = "Uz7FePTYa1cTsOlhz";
-    var EJ_SERVICE_ID = "service_17vs6bl";
+    // ── CONFIG ───────────────────────────────────────────────────
+    // EmailJS — https://dashboard.emailjs.com/admin
+    var EJ_PUBLIC_KEY  = "Uz7FePTYa1cTsOlhz";
+    var EJ_SERVICE_ID  = "service_17vs6bl";
     var EJ_TEMPLATE_ID = "template_79v6as7";
+    // Supabase — Dashboard → Settings → API
+    var SB_URL = "https://qclypcbgohtwslrpssyf.supabase.co";
+    var SB_KEY = "sb_publishable_ai_TaPsa26m5UQ0pQ1p71Q_KfxAMoPq";
+    // Receipt Tax — default GST split (change here to apply globally)
+    var RCP_SGST_PCT = 0;   // SGST % Configurable
+    var RCP_CGST_PCT = 0;   // CGST % Configurable
+</script>
+
+<script>
+    // ── EMAILJS INIT ─────────────────────────────────────────────
     emailjs.init({ publicKey: EJ_PUBLIC_KEY });
 
     // ── COUNTRY CODES ────────────────────────────────────────────
@@ -1168,10 +1508,7 @@
     }
 
     // ── SUPABASE CONFIG ──────────────────────────────────────────
-    var SB_URL = "https://qclypcbgohtwslrpssyf.supabase.co";
-    // Anon key for PostgREST — get this from Supabase Dashboard > Settings > API
-    // Placeholder below: replace with your actual anon or service_role key
-    var SB_KEY = "sb_publishable_ai_TaPsa26m5UQ0pQ1p71Q_KfxAMoPq";
+    // SB_URL and SB_KEY are loaded from config.js
 
     var SB_HEADERS = {
         "Content-Type": "application/json",
@@ -1402,6 +1739,7 @@
         if (tab === "clients") renderClients();
         if (tab === "tasks") renderTasks();
         if (tab === "settings") renderSettings();
+        if (tab === "receipt") rcpInit();
         updateStats();
     }
     function showTabMob(tab) {
@@ -1428,6 +1766,7 @@
         if (tab === "clients") renderClients();
         if (tab === "tasks") renderTasks();
         if (tab === "settings") renderSettings();
+        if (tab === "receipt") rcpInit();
         updateStats();
     }
 
@@ -2222,6 +2561,385 @@
             .catch(function (e) {
                 toast("Test failed: " + (e.text || e.message || "unknown error"), "error");
             });
+    }
+
+    // ── RECEIPT GENERATOR ─────────────────────────────────────────
+    var rcpItems = [];
+    var rcpInitDone = false;
+
+    function rcpUuid() {
+        var full = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function(c) {
+            var r = (crypto.getRandomValues(new Uint8Array(1))[0] & 15);
+            var v = c === "x" ? r : (r & 0x3 | 0x8);
+            return v.toString(16);
+        });
+        return full.slice(0, 8).toUpperCase();
+    }
+
+    function rcpTodayDDMMYY() {
+        var d = new Date();
+        var dd = String(d.getDate()).padStart(2, "0");
+        var mm = String(d.getMonth() + 1).padStart(2, "0");
+        var yy = String(d.getFullYear()).slice(-2);
+        return dd + "/" + mm + "/" + yy;
+    }
+
+    // Filename: DDMMYYYY_HHMMSS.cs  (cs = centiseconds = seconds to 2 decimal places)
+    function rcpFileTimestamp() {
+        var d = new Date();
+        var dd   = String(d.getDate()).padStart(2, "0");
+        var mm   = String(d.getMonth() + 1).padStart(2, "0");
+        var yyyy = d.getFullYear();
+        var hh   = String(d.getHours()).padStart(2, "0");
+        var min  = String(d.getMinutes()).padStart(2, "0");
+        var ss   = String(d.getSeconds()).padStart(2, "0");
+        var cs   = String(Math.floor(d.getMilliseconds() / 10)).padStart(2, "0");
+        return dd + mm + yyyy + "_" + hh + min + ss + "." + cs;
+    }
+
+    function rcpInit() {
+        if (!rcpInitDone) {
+            document.getElementById("rcp-number").textContent = rcpUuid();
+            var _td = new Date();
+            document.getElementById("rcp-date").value = _td.getFullYear() + "-" +
+                String(_td.getMonth()+1).padStart(2,"0") + "-" +
+                String(_td.getDate()).padStart(2,"0");
+            rcpItems = [];
+            rcpAddItem();
+            rcpInitDone = true;
+        }
+    }
+
+    function rcpReset() {
+        rcpInitDone = false;
+        document.getElementById("rcp-client").value = "";
+        document.getElementById("rcp-details").value = "";
+        rcpCalcTotal();
+        rcpInit();
+    }
+
+    function rcpAddItem() {
+        rcpItems.push({ desc: "", sessions: "", amount: "" });
+        rcpRenderTable();
+        // Focus the new row's description input
+        var rows = document.querySelectorAll("#rcp-items-body tr");
+        if (rows.length) {
+            var last = rows[rows.length - 1];
+            var inp = last.querySelector(".rcp-desc");
+            if (inp) inp.focus();
+        }
+    }
+
+    function rcpRemoveItem(idx) {
+        rcpItems.splice(idx, 1);
+        rcpRenderTable();
+    }
+
+    function rcpRenderTable() {
+        var tbody = document.getElementById("rcp-items-body");
+        if (!rcpItems.length) {
+            tbody.innerHTML = '<tr><td colspan="5" class="rcp-empty">No items yet — click <strong style="color:var(--lime)">+ Add Item</strong></td></tr>';
+            rcpCalcTotal();
+            return;
+        }
+        tbody.innerHTML = rcpItems.map(function(item, i) {
+            return '<tr data-idx="' + i + '">' +
+                '<td>' + (i + 1) + '</td>' +
+                '<td><input class="rcp-desc" type="text" value="' + esc(item.desc) + '" placeholder="e.g. Cognitive Behavioural Therapy session…" data-idx="' + i + '" data-field="desc" aria-label="Description for item ' + (i+1) + '"/></td>' +
+                '<td style="text-align:center;"><input class="rcp-amt" type="number" value="' + (item.sessions || "") + '" placeholder="1" min="1" step="1" style="text-align:center;" data-idx="' + i + '" data-field="sessions" aria-label="Sessions for item ' + (i+1) + '"/></td>' +
+                '<td><input class="rcp-amt" type="number" value="' + (item.amount || "") + '" placeholder="0.00" min="0" step="0.01" data-idx="' + i + '" data-field="amount" aria-label="Amount for item ' + (i+1) + '"/></td>' +
+                '<td class="rcp-del-col"><button class="rcp-row-del" data-idx="' + i + '" title="Remove" aria-label="Remove item ' + (i+1) + '">✕</button></td>' +
+                '</tr>';
+        }).join("");
+
+        tbody.querySelectorAll("input").forEach(function(inp) {
+            inp.addEventListener("input", function(e) {
+                var idx   = +e.target.dataset.idx;
+                var field = e.target.dataset.field;
+                rcpItems[idx][field] = e.target.value;
+                if (field === "amount") rcpCalcTotal();
+            });
+        });
+        tbody.querySelectorAll(".rcp-row-del").forEach(function(btn) {
+            btn.addEventListener("click", function() {
+                rcpRemoveItem(+btn.dataset.idx);
+            });
+        });
+        rcpCalcTotal();
+    }
+
+    function rcpCalcTotal() {
+        var subtotal = rcpItems.reduce(function(sum, item) {
+            var v = parseFloat(item.amount);
+            return sum + (isNaN(v) ? 0 : v);
+        }, 0);
+        var sgstPct = RCP_SGST_PCT;
+        var cgstPct = RCP_CGST_PCT;
+        var sgstAmt = subtotal * sgstPct / 100;
+        var cgstAmt = subtotal * cgstPct / 100;
+        var grand   = subtotal + sgstAmt + cgstAmt;
+        document.getElementById("rcp-subtotal").textContent = subtotal.toFixed(2);
+        document.getElementById("rcp-sgst-pct").textContent = sgstPct;
+        document.getElementById("rcp-cgst-pct").textContent = cgstPct;
+        document.getElementById("rcp-sgst-amt").textContent = sgstAmt.toFixed(2);
+        document.getElementById("rcp-cgst-amt").textContent = cgstAmt.toFixed(2);
+        document.getElementById("rcp-total").textContent    = grand.toFixed(2);
+        return { subtotal: subtotal, sgstPct: sgstPct, cgstPct: cgstPct,
+            sgstAmt: sgstAmt, cgstAmt: cgstAmt, grand: grand };
+    }
+
+    // Convert the in-page SVG logo to a PNG data-URL via an offscreen canvas
+    var RCP_LOGO_DATA_URL = "data:image/jpeg;base64,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0b1YmXBIiyWObpULhETaXG0lD4CjQwkU9ES6bJKKKVXVZjtWqGIP2mDrOlGGF0IOB42KTvAE96bqTDoApkwBE14EFa36URyy1khKEbQaYA4mdt11ZPr6LCnzY+SSpbfYNnTn5DTy8AAkuCiNWwhGY6sFKIpNpl2H3fVXsuEM76TePmm4htsTsxWhn0vzJv0qXR4L99ZrYT13NjeVp2SaMxwMTYtwsy4xnTY1bMcSoNjTwhi8GHIdGjzrDF6hlWPMkF6J4WT7ZPa4AWhFJzU6aUQHEzmKxi+at6cz1iUUxAzgSw7uGdghiCMjrVy3OsIRF6GpOS4BDBdb1AoMpEnDehxFySRsUvmpUl2UREnampSwvuDd+B1or8GBXZDrRQkhQIwmD0oxfdbf7bOm1KMc60lmjKxiHMomkgAzCRHI4fbFAxhZRuR3PTPqWXI3Log1CA70N0SByaACYD1wad6nQM33DsUfuTuHCKm7mmFfbhHVUCt/bFKCZh1gxJ2KGiZmye5QGXgoAqOOMwkZfqgNFMgHJydf0qSSjGjFKASISi4ydyp1dGTsyytK+MJFmcbJZzUUcyQ2aLtjCicQM7jPSaSEFuAJvh3O1KCVgoVizSmHb0GhnWRYL/ctt+HmAYEsSsArVQz9ua93opaqwVJEAIikmEOzlBcKkZwQ0uJIEGNZxQRZDFatDLoIKn+SSkhnnb5KmyUw3kdw8qCBGSN0aCIEExuc6dNbjTiibZOd6NE6kBLAAuLBeliP2S5FgwUyxJTTkAW6iqNeXplD4OTq3/k671unj25/sW9WD0eWcFGkuEhsv9RzoCACwH8F7WlXRN6hh3AQHTR96Ng0Z+sjsoukXaiw6A9wbnamIf5vR0j5FZd4P7/pyLf81//aAAwDAQACAAMAAAAQ8888888888888888888088888888488oc8888888sMk8LgQ4Ac88880c8ji88AU8884cc8Z24wIUw8s0004Zy84AU884s88LJIs0MQ4M48ccz8TYoESU8sA88s8SgGM0w88sc80Uc88888888888888888888888888888888//EABoRAAIDAQEAAAAAAAAAAAAAAAABETAxQVD/2gAIAQMBAT8Q8xCrlmjUWSBYsLo0rRO2S4G2/b//xAAbEQACAwEBAQAAAAAAAAAAAAAAAREwMVAhQf/aAAgB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";
+
+    function rcpBuildPdf(client, details, validItems, tax) {
+        var jsPDF  = window.jspdf.jsPDF;
+        var doc    = new jsPDF({ unit: "mm", format: "a4" });
+        var pageW  = 210, pageH = 297, margin = 16;
+        var contentW = pageW - margin * 2;           // 178 mm
+        var rn    = document.getElementById("rcp-number").textContent;
+        var _dv = document.getElementById("rcp-date").value;  // YYYY-MM-DD
+        var _dp = _dv ? _dv.split("-") : [];
+        var rcpDt = _dp.length === 3 ? _dp[2]+"/"+_dp[1]+"/"+_dp[0].slice(-2) : _dv;
+        var total = validItems.reduce(function(s, it) { return s + (parseFloat(it.amount) || 0); }, 0);
+
+        // Arial = helvetica in jsPDF
+        function A(style, size, r, g, b) {
+            doc.setFont("helvetica", style);
+            if (size !== null) doc.setFontSize(size);
+            if (r !== undefined) doc.setTextColor(r, g, b);
+        }
+
+        // ── HEADER ───────────────────────────────────────────
+        // Light grey band — compact
+        doc.setFillColor(247, 247, 247);
+        doc.rect(0, 0, pageW, 34, "F");
+        // Top rule — consistent grey
+        doc.setFillColor(150, 150, 150);
+        doc.rect(0, 0, pageW, 2, "F");
+
+        // Logo — top LEFT, square 22×22 mm
+        doc.addImage(RCP_LOGO_DATA_URL, "JPEG", margin, 5, 22, 22);
+
+        // Brand name — immediately right of logo, vertically centred
+        A("bold", 11, 22, 22, 22);
+        doc.text("Light House", margin + 27, 14);
+        A("normal", 7.5, 100, 100, 100);
+        doc.text("by Sahibaa Singh", margin + 27, 21);
+
+        // RECEIPT label — right side
+        A("bold", 20, 22, 22, 22);
+        doc.text("RECEIPT", pageW - margin, 22, { align: "right" });
+
+        // Separator
+        doc.setDrawColor(210, 210, 210);
+        doc.setLineWidth(0.4);
+        doc.line(0, 34, pageW, 34);
+
+        // ── RECEIPT META ─────────────────────────────────────
+        var y = 44;
+        // Left: Receipt No
+        A("bold", 7.5, 130, 130, 130);
+        doc.text("RECEIPT NO.", margin, y);
+        A("normal", 8, 35, 35, 35);
+        doc.text(rn, margin, y + 5);
+
+        // Right: Date
+        A("bold", 7.5, 130, 130, 130);
+        doc.text("DATE", pageW - margin, y, { align: "right" });
+        A("normal", 8, 35, 35, 35);
+        doc.text(rcpDt, pageW - margin, y + 5, { align: "right" });
+
+        // ── BILL TO ──────────────────────────────────────────
+        y += 11;  // tighter gap
+        // Bill To box — compact padding
+        var billBoxH = details ? 34 : 18;
+        doc.setFillColor(238, 238, 238);
+        doc.roundedRect(margin, y, contentW, billBoxH, 2, 2, "F");
+
+        A("bold", 7, 110, 110, 110);
+        doc.text("BILL TO", margin + 4, y + 5);
+        A("bold", 7.5, 110, 110, 110);
+        doc.text("Company / Client Name:", margin + 4, y + 11);
+        A("bold", 11, 22, 22, 22);
+        doc.text(client, margin + 4, y + 17);
+        if (details) {
+            A("bold", 7.5, 110, 110, 110);
+            doc.text("Client / Company Details:", margin + 4, y + 24);
+            A("normal", 7.5, 60, 60, 60);
+            doc.text(details, margin + 4, y + 30, { maxWidth: contentW - 8 });
+        }
+
+        // ── ITEMS TABLE ──────────────────────────────────────
+        y += billBoxH + 6;
+
+        // Column widths: S.No=22, Desc=auto, Sessions=24, Amount=42
+        var colSno     = 22;
+        var colSession = 24;
+        var colAmt     = 42;
+        var colDesc    = contentW - colSno - colSession - colAmt;  // 90 mm
+
+        var tableBody = validItems.map(function(item, i) {
+            return [
+                String(i + 1),
+                item.desc,
+                item.sessions ? String(item.sessions) : "-",
+                "Rs. " + parseFloat(item.amount || 0).toFixed(2)
+            ];
+        });
+
+        doc.autoTable({
+            startY: y,
+            margin: { left: margin, right: margin },
+            tableWidth: contentW,
+            head: [["S.No#", "Therapy Description", "Sessions", "Amount (Rs.)"]],
+            body: tableBody,
+            headStyles: {
+                fillColor:   [150, 150, 150],
+                textColor:   [255, 255, 255],
+                font:        "helvetica",
+                fontStyle:   "bold",
+                fontSize:    9,
+                cellPadding: { top: 5, right: 5, bottom: 5, left: 5 },
+            },
+            columnStyles: {
+                0: { cellWidth: colSno,     halign: "center", textColor: [120, 120, 120], valign: "middle" },
+                1: { cellWidth: colDesc,    halign: "left",   textColor: [30,  30,  30],  overflow: "linebreak", valign: "top" },
+                2: { cellWidth: colSession, halign: "center", textColor: [60,  60,  60],  valign: "middle" },
+                3: { cellWidth: colAmt,     halign: "right",  textColor: [30,  30,  30],  fontStyle: "bold", valign: "middle" },
+            },
+            bodyStyles: {
+                font:        "helvetica",
+                fontSize:    9.5,
+                cellPadding: { top: 5, right: 5, bottom: 5, left: 5 },
+                fillColor:   [255, 255, 255],
+            },
+            alternateRowStyles: { fillColor: [249, 249, 249] },
+            tableLineColor:  [210, 210, 210],
+            tableLineWidth:  0.3,
+            styles:          { overflow: "linebreak", font: "helvetica" },
+        });
+
+        var afterTable = doc.lastAutoTable.finalY;
+
+        // ── TAX + TOTAL TABLE ─────────────────────────────────
+        var taxColW = 76;   // width of the right-aligned summary table
+        var taxColX = pageW - margin - taxColW;
+
+        doc.autoTable({
+            startY:     afterTable + 2,
+            margin:     { left: taxColX, right: margin },
+            tableWidth: taxColW,
+            body: [
+                ["Subtotal",                           "Rs. " + tax.subtotal.toFixed(2)],
+                ["SGST (" + tax.sgstPct + "%)",        "Rs. " + tax.sgstAmt.toFixed(2)],
+                ["CGST (" + tax.cgstPct + "%)",        "Rs. " + tax.cgstAmt.toFixed(2)],
+            ],
+            foot: [
+                ["Grand Total",                        "Rs. " + tax.grand.toFixed(2)],
+            ],
+            showFoot:    "lastPage",
+            bodyStyles: {
+                font:        "helvetica",
+                fontSize:    8.5,
+                cellPadding: { top: 3, bottom: 3, left: 5, right: 5 },
+                fillColor:   [255, 255, 255],
+                textColor:   [60, 60, 60],
+            },
+            columnStyles: {
+                0: { halign: "left",  textColor: [110, 110, 110] },
+                1: { halign: "right", fontStyle: "bold", textColor: [40, 40, 40] },
+            },
+            footStyles: {
+                font:        "helvetica",
+                fontSize:    9.5,
+                fontStyle:   "bold",
+                fillColor:   [150, 150, 150],
+                textColor:   [255, 255, 255],
+                cellPadding: { top: 4, bottom: 4, left: 5, right: 5 },
+            },
+            alternateRowStyles: { fillColor: [248, 248, 248] },
+            tableLineColor:  [210, 210, 210],
+            tableLineWidth:  0.3,
+        });
+        var totalY = doc.lastAutoTable.finalY;
+
+        // ── DISCLAIMER (bottom-left, just above footer) ───────
+        var footH    = 20;
+        var footTop  = pageH - footH;
+        var discY    = footTop - 12;
+        // (totalY is now the grand-total badge Y; blockH used for spacing)
+
+        doc.setDrawColor(210, 210, 210);
+        doc.setLineWidth(0.3);
+        doc.line(margin, discY - 3, pageW - margin, discY - 3);
+
+        A("bold", 7.5, 80, 80, 80);
+        doc.text("Disclaimer:", margin, discY + 3);
+        A("normal", 7.5, 100, 100, 100);
+        doc.text(
+            "It was a pleasure doing business with you. Please make the payment by the due date.",
+            margin + 19, discY + 3,
+            { maxWidth: contentW - 22 }
+        );
+
+        // ── FOOTER ───────────────────────────────────────────
+        doc.setFillColor(150, 150, 150);
+        doc.rect(0, footTop, pageW, footH, "F");
+        doc.setFillColor(255, 255, 255);
+        doc.rect(0, footTop, pageW, 0.4, "F");
+
+        A("normal", 7, 245, 245, 245);
+        doc.text(
+            "Address: E-37/1, Rajouri Garden Marg, Block J, West, New Delhi, Delhi 110027",
+            pageW / 2, footTop + 7, { align: "center" }
+        );
+        doc.text(
+            "Email: thelighthousebysahibaa@gmail.com   |   Contact Us: +91-7292019461",
+            pageW / 2, footTop + 13, { align: "center" }
+        );
+        A("normal", 6.5, 220, 220, 220);
+        doc.text("Page 1 of 1", pageW - margin, footTop + 18, { align: "right" });
+
+        // ── SAVE ─────────────────────────────────────────────
+        var safeClient = client
+            .toUpperCase()
+            .replace(/[^A-Z0-9]/g, "_")
+            .replace(/_+/g, "_")
+            .replace(/^_|_$/g, "");
+        var filename = safeClient + "_" + rcpFileTimestamp() + ".pdf";
+        doc.save(filename);
+        toast("\u2713 Receipt saved: " + filename, "success");
+    }
+
+    function rcpGenerate() {
+        var client  = (document.getElementById("rcp-client").value || "").trim();
+        var details = (document.getElementById("rcp-details").value || "").trim();
+        var tax     = rcpCalcTotal();
+        if (!client) {
+            toast("Please enter a client / company name.", "error");
+            document.getElementById("rcp-client").focus();
+            return;
+        }
+        var validItems = rcpItems.filter(function(it) { return it.desc.trim() !== ""; });
+        if (!validItems.length) {
+            toast("Add at least one line item with a description.", "error");
+            return;
+        }
+        if (!window.jspdf) { toast("PDF library not loaded yet, please wait.", "error"); return; }
+
+        var btn = document.getElementById("rcp-gen-btn");
+        if (btn) { btn.disabled = true; btn.textContent = "Generating…"; }
+
+        try {
+            rcpBuildPdf(client, details, validItems, tax);
+        } catch(e) {
+            toast("PDF error: " + e.message, "error");
+        } finally {
+            if (btn) {
+                btn.disabled = false;
+                btn.innerHTML = '<svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 1v9M4.5 7l3.5 3.5L11.5 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 13h12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg> Generate Receipt PDF';
+            }
+        }
     }
 
     // ── AUTO REFRESH ─────────────────────────────────────────────
