@@ -1,7 +1,7 @@
-# Managment Board - The Light House
+# Management Board - The Light House
 
-The application is build on REACT.js and plain HTML. This app is compatible with desktop and tablet 
-and mobile phone.
+The application is built on React.js and plain HTML. This app is compatible with desktop and tablet 
+and a mobile phone.
 
 # To Deploy Temporarily
 
