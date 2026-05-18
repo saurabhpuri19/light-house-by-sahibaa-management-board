@@ -3,11 +3,11 @@
 The application is built on React.js and plain HTML. This app is compatible with desktop and tablet 
 and a mobile phone.
 
-# To Deploy Temporarily
+# Deployment
 
-Register with www.playcode.io and copy past the index.html file from the repository to the new project
+Register with www.playcode.io and copy-paste the index.html file from the repository to the new project
 created in playcode.io. Publish it and view the result. Under preview, one can view different views
-of the app.
+of the app like desktop, tablet & mobile.
 
 The app uses SUPABASE Database to store/update/delete records. Supabase is free for 500 MB
 and it has to table client_tbl & task_tbl
