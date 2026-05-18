@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-    <title>Light House — by Sahibaa Singh</title>
+    <title>The Light House — by Sahibaa Preet Singh</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link
             href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap"
@@ -1139,8 +1139,8 @@
                 </svg>
             </div>
             <div class="brand-text">
-                <div class="brand-name">Light House</div>
-                <div class="brand-sub">by Sahibaa Singh</div>
+                <div class="brand-name">The Light House</div>
+                <div class="brand-sub">by Sahibaa Preet Singh</div>
             </div>
         </a>
         <nav class="nav-desktop">
@@ -2401,7 +2401,7 @@
             task_desc : task.description,
             due_date  : due,
             message   : body,
-            from_name : "Sahibaa Singh — Light House",
+            from_name : "Sahibaa Preet Singh — The Light House",
         };
         // Return the promise — do NOT update emailStatus here;
         // sendEmailsSequentially manages status after all sends finish.
@@ -2528,7 +2528,7 @@
             '<div class="settings-card">' +
             '<div class="settings-title">EmailJS template setup</div>' +
             '<div style="font-size:13px;color:var(--txt2);margin-bottom:14px;line-height:1.7;">Make sure your EmailJS template uses these variables:</div>' +
-            '<div class="mono">To: {{to_email}}\nSubject: Task Assigned: Light House by Sahibaa Singh\nBody: {{message}}</div>' +
+            '<div class="mono">To: {{to_email}}\nSubject: Task Assigned: The Light House by Sahibaa Preet Singh\nBody: {{message}}</div>' +
             "</div>";
     }
 
@@ -2547,11 +2547,11 @@
         var params = {
             to_email: "saurabhpuri19@gmail.com",
             to_name: "Sahibaa",
-            task_desc: "Test task from Light House",
+            task_desc: "Test task from The Light House",
             due_date: fmtDate(new Date().toISOString().split("T")[0]),
             message:
-                "Hello,\n\nThis is a test email from Light House by Sahibaa Singh.\n\nYour email setup is working correctly!\n\nRegards\nSahibaa",
-            from_name: "Sahibaa Singh — Light House",
+                "Hello,\n\nThis is a test email from The Light House by Sahibaa Preet Singh.\n\nYour email setup is working correctly!\n\nRegards\nSahibaa",
+            from_name: "Sahibaa Preet Singh — The Light House",
         };
         emailjs
             .send(EJ_SERVICE_ID, EJ_TEMPLATE_ID, params)
@@ -2722,9 +2722,9 @@
 
         // Brand name — immediately right of logo, vertically centred
         A("bold", 11, 22, 22, 22);
-        doc.text("Light House", margin + 27, 14);
+        doc.text("The Light House", margin + 27, 14);
         A("normal", 7.5, 100, 100, 100);
-        doc.text("by Sahibaa Singh", margin + 27, 21);
+        doc.text("by Sahibaa Preet Singh", margin + 27, 21);
 
         // RECEIPT label — right side
         A("bold", 20, 22, 22, 22);
