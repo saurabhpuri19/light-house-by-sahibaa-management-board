@@ -1,15 +1,15 @@
-# Task Accelerator
+# Managment Board - The Light House
 
-The application is build on REACT.js and plain HTML. This app is compatible with desktop, tablet 
+The application is build on REACT.js and plain HTML. This app is compatible with desktop and tablet 
 and mobile phone.
 
 # To Deploy Temporarily
 
-Register with www.playcode.io and copy past the index.html file from repository to the new project
-created in playcode.io. Publish it and view the result. Under preview one can view different views
+Register with www.playcode.io and copy past the index.html file from the repository to the new project
+created in playcode.io. Publish it and view the result. Under preview, one can view different views
 of the app.
 
-The app uses SUPABASE Database to store/update/delete records. Supabase is free of cost for 500 MB
+The app uses SUPABASE Database to store/update/delete records. Supabase is free for 500 MB
 and it has to table client_tbl & task_tbl
 
 ## Client Table Schema
