@@ -37,6 +37,10 @@ task_client_id text null,
 constraint tasks_tbl_pkey primary key (task_id)
 ) TABLESPACE pg_default;
 
+##  Immersive Experience Folder
+
+The folder contains the version of the website which provides an immersive experience with glassmorphic UX design.
+
 <img width="1506" height="714" alt="Screenshot 2026-06-11 at 7 15 31 pm" src="https://github.com/user-attachments/assets/eb5b8b4e-0fe6-4594-8af7-f8f5a2642aec" />
 
 
