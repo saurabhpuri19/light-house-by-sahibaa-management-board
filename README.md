@@ -1,4 +1,4 @@
-# Management Board - The Light House
+# Management Board - Light House
 
 The application is built on React.js and plain HTML5. This app is compatible with desktop and tablet 
 and a mobile phone.
