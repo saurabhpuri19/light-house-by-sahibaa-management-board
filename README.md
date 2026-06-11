@@ -36,3 +36,5 @@ task_due_date timestamp without time zone null,
 task_client_id text null,
 constraint tasks_tbl_pkey primary key (task_id)
 ) TABLESPACE pg_default;
+
+<img width="1510" height="733" alt="Screenshot 2026-06-11 at 7 14 58 pm" src="https://github.com/user-attachments/assets/71c13d4f-33e9-4995-b7f7-ea9c79e7c6c8" />
