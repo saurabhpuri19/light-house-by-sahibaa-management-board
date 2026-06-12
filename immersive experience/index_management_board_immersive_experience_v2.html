@@ -232,52 +232,139 @@
             font-weight: 700;
             box-shadow: 0 0 18px -3px var(--lime-glow), 0 1px 0 rgba(255,255,255,0.5) inset;
         }
-        .nav-mobile {
+        /* ── MOBILE HAMBURGER + FULL-SCREEN MENU PANE ───────────── */
+        .hamburger {
             display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
+            width: 44px;
+            height: 44px;
+            padding: 11px 10px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-med);
+            border-radius: 12px;
+            cursor: pointer;
+            -webkit-backdrop-filter: blur(20px) saturate(160%);
+            backdrop-filter: blur(20px) saturate(160%);
+            box-shadow: 0 1px 0 rgba(255,255,255,0.1) inset, 0 4px 16px -6px rgba(0,0,0,0.4);
+            position: relative;
+            z-index: 210;
+            transition: box-shadow 0.18s ease;
+        }
+        .hamburger span {
+            display: block;
+            width: 100%;
+            height: 2px;
+            background: var(--lime);
+            border-radius: 2px;
+            box-shadow: 0 0 8px var(--lime-glow2);
+            transition: transform 0.25s ease, opacity 0.18s ease;
+        }
+        .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+        .hamburger.open span:nth-child(2) { opacity: 0; }
+        .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+        .mobile-menu {
             position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(10, 12, 22, 0.75);
+            inset: 0;
+            z-index: 200;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            padding: 84px 26px max(36px, env(safe-area-inset-bottom));
+            background: rgba(5, 7, 14, 0.86);
             -webkit-backdrop-filter: var(--blur-heavy);
             backdrop-filter: var(--blur-heavy);
-            border-top: 1px solid var(--border-med);
-            z-index: 100;
-            padding: 8px 0 max(8px, env(safe-area-inset-bottom));
-            box-shadow: 0 1px 0 rgba(255,255,255,0.07) inset, 0 -16px 48px -20px rgba(0,0,0,0.9);
+            opacity: 0;
+            transition: opacity 0.25s ease;
         }
-        .nav-mobile-inner {
-            display: flex;
-            justify-content: space-around;
-        }
-        .nav-mob-btn {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-            padding: 6px 18px;
-            border: none;
+        .mobile-menu.show { display: flex; }
+        .mobile-menu.visible { opacity: 1; }
+        .mobile-menu-item {
+            width: 100%;
+            padding: 21px 0;
             background: transparent;
-            cursor: pointer;
-            color: var(--txt3);
+            border: none;
+            border-bottom: 1px solid var(--border);
+            color: var(--txt);
             font-family: "DM Sans", sans-serif;
-            font-size: 10px;
-            font-weight: 600;
-            border-radius: 12px;
-            transition: all 0.18s ease;
+            font-size: 24px;
+            font-weight: 500;
+            letter-spacing: -0.3px;
+            text-align: center;
+            cursor: pointer;
+            transition: color 0.15s ease, text-shadow 0.15s ease;
         }
-        .nav-mob-btn.active {
+        .mobile-menu-item.active {
             color: var(--lime);
-            background: var(--lime-dim);
-            text-shadow: 0 0 12px var(--lime-glow);
+            text-shadow: 0 0 18px var(--lime-glow);
         }
-        .nav-mob-btn svg {
-            width: 22px;
-            height: 22px;
-            filter: drop-shadow(0 0 0 transparent);
-            transition: filter 0.18s ease;
+        .mobile-menu-cta {
+            margin-top: 30px;
+            width: 100%;
+            padding: 17px;
+            border: none;
+            border-radius: 14px;
+            background: linear-gradient(180deg, var(--lime), var(--lime2));
+            color: #0b0d05;
+            font-family: "DM Sans", sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            cursor: pointer;
+            box-shadow: 0 0 24px -4px var(--lime-glow), 0 1px 0 rgba(255,255,255,0.45) inset;
+            transition: transform 0.15s ease;
         }
-        .nav-mob-btn.active svg { filter: drop-shadow(0 0 6px var(--lime-glow)); }
+        .mobile-menu-cta:active { transform: scale(0.97); }
+        .mobile-menu-wa {
+            margin-top: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            padding: 13px;
+            border: 1px solid var(--border-med);
+            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--txt2);
+            font-family: "DM Sans", sans-serif;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            text-decoration: none;
+            transition: color 0.15s ease, border-color 0.15s ease;
+        }
+        .mobile-menu-wa svg { width: 17px; height: 17px; color: var(--lime); filter: drop-shadow(0 0 6px var(--lime-glow2)); }
+        .mobile-menu-wa:hover { color: var(--txt); border-color: var(--border-strong); }
+
+        /* ── WHATSAPP FLOATING BUTTON ───────────────────────────── */
+        .wa-fab {
+            position: fixed;
+            right: 26px;
+            bottom: max(115px, calc(env(safe-area-inset-bottom) + 115px));
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(180deg, var(--lime), var(--lime2));
+            color: #0b0d05;
+            z-index: 150;
+            box-shadow: 0 0 26px -2px var(--lime-glow), 0 10px 28px -10px rgba(0,0,0,0.65), 0 1px 0 rgba(255,255,255,0.45) inset;
+            transition: transform 0.18s ease, box-shadow 0.18s ease;
+        }
+        .wa-fab svg { width: 30px; height: 30px; }
+        .wa-fab:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 0 36px 0 var(--lime-glow), 0 14px 32px -10px rgba(0,0,0,0.7), 0 1px 0 rgba(255,255,255,0.5) inset;
+        }
+        .wa-fab:active { transform: scale(0.95); }
 
         .main {
             flex: 1;
@@ -310,11 +397,13 @@
         ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.22); }
         @media (max-width: 600px) {
-            .main { padding: 16px; padding-bottom: 100px; }
+            .main { padding: 16px; padding-bottom: 96px; }
             .header { padding: 0 16px; height: 56px; }
             .app { padding-top: 56px; }
             .nav-desktop { display: none; }
-            .nav-mobile { display: block; }
+            .hamburger { display: flex; }
+            .wa-fab { width: 52px; height: 52px; right: 16px; bottom: max(98px, calc(env(safe-area-inset-bottom) + 98px)); }
+            .wa-fab svg { width: 28px; height: 28px; }
             .brand-name { font-size: 15px; }
         }
 
@@ -1096,8 +1185,14 @@
             border-bottom: 1px solid var(--border);
         }
         .rcp-table thead th:first-child { width: 48px; text-align: center; }
+        .rcp-table thead th:nth-child(3) { width: 76px; }  /* Sessions */
+        .rcp-table thead th:nth-child(4) { width: 106px; } /* Amount */
         .rcp-table thead th:last-child  { width: 130px; text-align: right; }
         .rcp-table thead th.rcp-del-col { width: 44px; }
+        @media (max-width: 600px) {
+            .rcp-table thead th:nth-child(3) { width: 62px; }
+            .rcp-table thead th:nth-child(4) { width: 92px; }
+        }
         .rcp-table tbody tr { border-bottom: 1px solid var(--border); }
         .rcp-table tbody tr:last-child { border-bottom: none; }
         .rcp-table tbody td {
@@ -1265,82 +1360,38 @@
             <button class="nav-btn" onclick="showTab('clients',this)">Clients</button>
             <button class="nav-btn" onclick="showTab('tasks',this)">Tasks</button>
             <button class="nav-btn" onclick="showTab('receipt',this)">Receipt Generator</button>
-            <button class="nav-btn" onclick="showTab('settings',this)">Settings</button>
+            <!--Commenting Seeting Tab as it's only for debugging-->
+            <!--<button class="nav-btn" onclick="showTab('settings',this)">Settings</button>-->
         </nav>
+        <button class="hamburger" id="hamburger-btn" onclick="toggleMobileMenu()" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
     </header>
 
-    <!-- Mobile bottom nav -->
-    <nav class="nav-mobile">
-        <div class="nav-mobile-inner">
-            <button class="nav-mob-btn active" id="mob-dashboard" onclick="showTabMob('dashboard')">
-                <svg
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                >
-                    <rect x="3" y="3" width="7" height="7" rx="1" />
-                    <rect x="14" y="3" width="7" height="7" rx="1" />
-                    <rect x="3" y="14" width="7" height="7" rx="1" />
-                    <rect x="14" y="14" width="7" height="7" rx="1" />
-                </svg>
-                Dashboard
-            </button>
-            <button class="nav-mob-btn" id="mob-clients" onclick="showTabMob('clients')">
-                <svg
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                >
-                    <circle cx="9" cy="7" r="4" />
-                    <path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2" />
-                    <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-                    <path d="M21 21v-2a4 4 0 0 0-3-3.85" />
-                </svg>
-                Clients
-            </button>
-            <button class="nav-mob-btn" id="mob-tasks" onclick="showTabMob('tasks')">
-                <svg
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                >
-                    <path d="M9 11l3 3L22 4" />
-                    <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
-                </svg>
-                Tasks
-            </button>
-            <button class="nav-mob-btn" id="mob-settings" onclick="showTabMob('settings')">
-                <svg
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                >
-                    <circle cx="12" cy="12" r="3" />
-                    <path
-                            d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"
-                    />
-                </svg>
-                Settings
-            </button>
-            <button class="nav-mob-btn" id="mob-receipt" onclick="showTabMob('receipt')">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                    <polyline points="14 2 14 8 20 8"/>
-                    <line x1="9" y1="13" x2="15" y2="13"/>
-                    <line x1="9" y1="17" x2="13" y2="17"/>
-                </svg>
-                Receipt
-            </button>
-        </div>
-    </nav>
+    <!-- Mobile menu pane (opened via hamburger) -->
+    <div class="mobile-menu" id="mobile-menu">
+        <button class="mobile-menu-cta active" id="mob-dashboard" onclick="showTabMob('dashboard')">Dashboard</button>
+        <button class="mobile-menu-item" id="mob-clients" onclick="showTabMob('clients')">Clients</button>
+        <button class="mobile-menu-item" id="mob-tasks" onclick="showTabMob('tasks')">Tasks</button>
+        <button class="mobile-menu-item" id="mob-receipt" onclick="showTabMob('receipt')">Receipt Generator</button>
+        <!--Commenting Seeting Tab as it's only for debugging-->
+        <!--<button class="mobile-menu-item" id="mob-settings" onclick="showTabMob('settings')">Settings</button>-->
+        <a class="mobile-menu-wa" href="https://wa.me/+919818704445" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/>
+            </svg>
+            WhatsApp Clients
+        </a>
+    </div>
+
+    <!-- WhatsApp floating button -->
+    <a class="wa-fab" href="https://wa.me/917292019461" target="_blank" rel="noopener noreferrer" aria-label="Chat with us on WhatsApp">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/>
+        </svg>
+    </a>
 
     <main class="main">
         <h2 class="task-accelerator-heading">Management Board</h2>
@@ -1531,7 +1582,7 @@
                             <path d="M8 1v9M4.5 7l3.5 3.5L11.5 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
                             <path d="M2 13h12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
                         </svg>
-                        Generate Receipt PDF
+                        Generate Receipt (PDF)
                     </button>
                 </div>
             </div>
@@ -1847,6 +1898,11 @@
         });
         document.getElementById("tab-" + tab).classList.add("active");
         if (btn) btn.classList.add("active");
+        document.querySelectorAll(".mobile-menu-item, .mobile-menu-cta").forEach(function (b) {
+            b.classList.remove("active");
+        });
+        var mb = document.getElementById("mob-" + tab);
+        if (mb) mb.classList.add("active");
         closeAllOverlays();
         currentTab = tab;
         if (tab === "dashboard") {
@@ -1860,7 +1916,7 @@
         updateStats();
     }
     function showTabMob(tab) {
-        document.querySelectorAll(".nav-mob-btn").forEach(function (b) {
+        document.querySelectorAll(".mobile-menu-item, .mobile-menu-cta").forEach(function (b) {
             b.classList.remove("active");
         });
         var mb = document.getElementById("mob-" + tab);
@@ -1875,6 +1931,7 @@
         });
         document.getElementById("tab-" + tab).classList.add("active");
         closeAllOverlays();
+        closeMobileMenu();
         currentTab = tab;
         if (tab === "dashboard") {
             renderDashboard();
@@ -1885,6 +1942,41 @@
         if (tab === "settings") renderSettings();
         if (tab === "receipt") rcpInit();
         updateStats();
+    }
+
+    // ── MOBILE MENU (hamburger) ──────────────────────────────────
+    function toggleMobileMenu() {
+        var menu = document.getElementById("mobile-menu");
+        if (menu.classList.contains("show")) {
+            closeMobileMenu();
+        } else {
+            openMobileMenu();
+        }
+    }
+    function openMobileMenu() {
+        var menu = document.getElementById("mobile-menu");
+        var btn = document.getElementById("hamburger-btn");
+        menu.classList.add("show");
+        requestAnimationFrame(function () {
+            menu.classList.add("visible");
+        });
+        btn.classList.add("open");
+        btn.setAttribute("aria-expanded", "true");
+        btn.setAttribute("aria-label", "Close menu");
+        document.body.style.overflow = "hidden";
+    }
+    function closeMobileMenu() {
+        var menu = document.getElementById("mobile-menu");
+        var btn = document.getElementById("hamburger-btn");
+        if (!menu || !menu.classList.contains("show")) return;
+        menu.classList.remove("visible");
+        btn.classList.remove("open");
+        btn.setAttribute("aria-expanded", "false");
+        btn.setAttribute("aria-label", "Open menu");
+        document.body.style.overflow = "";
+        setTimeout(function () {
+            menu.classList.remove("show");
+        }, 250);
     }
 
     function checkConfigBanner() {
