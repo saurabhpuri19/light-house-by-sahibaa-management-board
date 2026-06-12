@@ -1359,7 +1359,7 @@
             <button class="nav-btn active" onclick="showTab('dashboard',this)">Dashboard</button>
             <button class="nav-btn" onclick="showTab('clients',this)">Clients</button>
             <button class="nav-btn" onclick="showTab('tasks',this)">Tasks</button>
-            <button class="nav-btn" onclick="showTab('receipt',this)">Receipt Generator</button>
+            <button class="nav-btn" onclick="showTab('receipt',this)">Receipt Hub</button>
             <!--Commenting Seeting Tab as it's only for debugging-->
             <!--<button class="nav-btn" onclick="showTab('settings',this)">Settings</button>-->
         </nav>
@@ -1375,7 +1375,7 @@
         <button class="mobile-menu-cta active" id="mob-dashboard" onclick="showTabMob('dashboard')">Dashboard</button>
         <button class="mobile-menu-item" id="mob-clients" onclick="showTabMob('clients')">Clients</button>
         <button class="mobile-menu-item" id="mob-tasks" onclick="showTabMob('tasks')">Tasks</button>
-        <button class="mobile-menu-item" id="mob-receipt" onclick="showTabMob('receipt')">Receipt Generator</button>
+        <button class="mobile-menu-item" id="mob-receipt" onclick="showTabMob('receipt')">Receipt Hub</button>
         <!--Commenting Seeting Tab as it's only for debugging-->
         <!--<button class="mobile-menu-item" id="mob-settings" onclick="showTabMob('settings')">Settings</button>-->
         <a class="mobile-menu-wa" href="https://wa.me/+919818704445" target="_blank" rel="noopener noreferrer">
@@ -1440,7 +1440,7 @@
         <!-- CLIENTS -->
         <div id="tab-clients" class="tab-view">
             <div class="section-hdr">
-                <div class="section-title">Clients</div>
+                <div class="section-title">Register Clients</div>
                 <button class="add-btn" onclick="openModal('add-client')">+ Add Client</button>
             </div>
             <div class="modal-stack">
@@ -1459,7 +1459,7 @@
         <!-- TASKS -->
         <div id="tab-tasks" class="tab-view">
             <div class="section-hdr">
-                <div class="section-title">Tasks</div>
+                <div class="section-title">Tasks Assignment</div>
                 <button class="add-btn" onclick="openModal('add-task')">+ Assign Task</button>
             </div>
             <div class="filters">
@@ -1493,7 +1493,7 @@
         <!-- RECEIPT GENERATOR -->
         <div id="tab-receipt" class="tab-view">
             <div class="section-hdr" style="margin-bottom:20px;">
-                <div class="section-title" style="font-size:18px;">Receipt Generator</div>
+                <div class="section-title" style="font-size:18px;">Receipt Creator</div>
                 <button class="add-btn" onclick="rcpReset()" style="background:var(--bg3);color:var(--txt2);border:1px solid var(--border);">↺ Reset</button>
             </div>
 
@@ -1536,7 +1536,7 @@
                         <table class="rcp-table" aria-label="Therapy line items">
                             <thead>
                             <tr>
-                                <th>S.No#</th>
+                                <th> # </th>
                                 <th>Therapy Description</th>
                                 <th style="text-align:center;">Sessions</th>
                                 <th style="text-align:right;">Amount (₹)</th>
@@ -1582,7 +1582,7 @@
                             <path d="M8 1v9M4.5 7l3.5 3.5L11.5 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
                             <path d="M2 13h12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
                         </svg>
-                        Generate Receipt (PDF)
+                        Create Receipt (PDF)
                     </button>
                 </div>
             </div>
