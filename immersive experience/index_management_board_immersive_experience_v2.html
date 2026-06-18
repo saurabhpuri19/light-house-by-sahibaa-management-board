@@ -1314,6 +1314,148 @@
         @media (max-width: 600px) {
             .rcp-grid { grid-template-columns: 1fr; }
         }
+        /* ── AI CHAT ─────────────────────────────────────────────── */
+        .ai-key-wrap { position: relative; }
+        .ai-key-wrap input { padding-right: 42px !important; }
+        .ai-eye-btn {
+            position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
+            background: none; border: none; cursor: pointer; color: var(--txt3);
+            padding: 6px; display: flex; align-items: center; border-radius: 8px;
+            transition: color 0.15s;
+        }
+        .ai-eye-btn:hover { color: var(--lime); }
+        .ai-chat-card {
+            display: flex; flex-direction: column;
+            height: 800px; max-height: 80vh;
+            background: var(--bg2);
+            backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur);
+            border: 1px solid var(--border-med); border-radius: 18px;
+            box-shadow: var(--pane-shadow); overflow: hidden;
+        }
+        .ai-chat-msgs {
+            flex: 1; overflow-y: auto; padding: 18px 16px;
+            display: flex; flex-direction: column; gap: 12px;
+            scroll-behavior: smooth;
+        }
+        .ai-msg { display: flex; gap: 10px; max-width: 86%; }
+        .ai-msg.user { align-self: flex-end; flex-direction: row-reverse; }
+        .ai-msg.bot  { align-self: flex-start; }
+        .ai-avatar {
+            flex: 0 0 30px; width: 30px; height: 30px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 13px; font-weight: 700; font-family: "DM Mono", monospace;
+        }
+        .ai-msg.user .ai-avatar { background: var(--lime); color: #1a2000; }
+        .ai-msg.bot  .ai-avatar { background: var(--bg4); color: var(--lime); border: 1px solid var(--border-med); }
+        .ai-bubble {
+            padding: 11px 15px; border-radius: 14px; font-size: 15px;
+            line-height: 1.55; word-break: break-word; white-space: pre-wrap;
+        }
+        .ai-msg.user .ai-bubble {
+            background: var(--lime-dim); border: 1px solid rgba(212,242,58,0.25);
+            border-bottom-right-radius: 4px; color: var(--txt);
+        }
+        .ai-msg.bot .ai-bubble {
+            background: var(--bg3); border: 1px solid var(--border);
+            border-bottom-left-radius: 4px; color: var(--txt);
+        }
+        .ai-msg.error .ai-bubble {
+            background: var(--red-bg); border: 1px solid var(--red-border); color: var(--red);
+        }
+        .ai-bubble code {
+            font-family: "DM Mono", monospace; font-size: 13.5px;
+            background: rgba(255,255,255,0.07); padding: 1px 5px; border-radius: 5px;
+        }
+        .ai-bubble img.ai-gen-img {
+            display: block; max-width: 100%; height: auto;
+            border-radius: 10px; margin: 8px 0 2px;
+            border: 1px solid var(--border-med);
+            background: var(--bg4); cursor: zoom-in;
+        }
+        .ai-working {
+            display: inline-flex; align-items: center; gap: 9px;
+            color: var(--txt2, var(--txt)); font-size: 13px;
+        }
+        .ai-working .ai-working-label {
+            font-family: "DM Mono", monospace; font-size: 12.5px;
+            letter-spacing: 0.3px; color: var(--lime); opacity: 0.9;
+        }
+        .ai-typing { display: inline-flex; gap: 5px; padding: 4px 2px; }
+        .ai-typing span {
+            width: 7px; height: 7px; border-radius: 50%; background: var(--lime);
+            opacity: 0.35; animation: aiBlink 1.2s infinite;
+        }
+        .ai-typing span:nth-child(2) { animation-delay: 0.2s; }
+        .ai-typing span:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes aiBlink { 0%,80%,100% { opacity: 0.25; } 40% { opacity: 1; } }
+        .ai-chat-inputrow {
+            display: flex; gap: 10px; padding: 12px;
+            border-top: 1px solid var(--border); background: rgba(255,255,255,0.03);
+        }
+        .ai-chat-inputrow textarea {
+            flex: 1; resize: none; font-family: "DM Sans", sans-serif;
+            font-size: 13.5px; background: var(--bg3); border: 1px solid var(--border);
+            border-radius: 12px; padding: 10px 13px; color: var(--txt);
+            outline: none; line-height: 4.00; max-height: 210px; transition: border 0.15s;
+        }
+        .ai-chat-inputrow textarea:focus { border-color: var(--lime); }
+        .ai-chat-inputrow textarea::placeholder { color: var(--txt3); }
+        .ai-send-btn {
+            flex: 0 0 auto; align-self: flex-end;
+            background: var(--lime); color: #1a2000; border: none; cursor: pointer;
+            font-family: "DM Sans", sans-serif; font-weight: 700; font-size: 13px;
+            padding: 10px 18px; border-radius: 12px;
+            display: flex; align-items: center; gap: 7px; transition: box-shadow 0.15s, opacity 0.15s;
+        }
+        .ai-send-btn:hover { box-shadow: 0 0 26px -3px var(--lime-glow); }
+        .ai-send-btn:disabled { opacity: 0.45; cursor: not-allowed; box-shadow: none; }
+        .ai-empty {
+            margin: auto; text-align: center; color: var(--txt3); font-size: 13px;
+            display: flex; flex-direction: column; gap: 8px; align-items: center;
+        }
+        .ai-empty .ai-empty-icon { font-size: 30px; }
+        .ai-chat-toolbar {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 9px 14px; border-bottom: 1px solid var(--border);
+            background: rgba(255,255,255,0.03);
+        }
+        .ai-toolbar-title {
+            display: inline-flex; align-items: center; gap: 7px;
+            font-size: 11px; font-family: "DM Mono", monospace;
+            text-transform: uppercase; letter-spacing: 1px; color: var(--txt2);
+        }
+        .ai-clear-btn {
+            display: inline-flex; align-items: center; gap: 6px;
+            background: var(--bg3); border: 1px solid var(--border);
+            color: var(--txt2); font-family: "DM Sans", sans-serif;
+            font-size: 11.5px; font-weight: 600; padding: 5px 11px;
+            border-radius: 999px; cursor: pointer; transition: all 0.15s;
+        }
+        .ai-clear-btn:hover { color: var(--red); border-color: var(--red-border); background: var(--red-bg); }
+        .ai-bubble-wrap { display: flex; flex-direction: column; min-width: 0; }
+        .ai-msg.user .ai-bubble-wrap { align-items: flex-end; }
+        .ai-msg.bot  .ai-bubble-wrap { align-items: flex-start; }
+        .ai-copy-btn {
+            margin-top: 5px; display: inline-flex; align-items: center; gap: 5px;
+            background: none; border: 1px solid transparent; cursor: pointer;
+            color: var(--txt3); font-family: "DM Mono", monospace; font-size: 10.5px;
+            padding: 3px 8px; border-radius: 8px;
+            opacity: 0; transition: opacity 0.15s, color 0.15s, border-color 0.15s;
+        }
+        .ai-msg:hover .ai-copy-btn, .ai-copy-btn:focus-visible { opacity: 1; }
+        .ai-copy-btn:hover { color: var(--lime); border-color: var(--border); background: var(--bg3); }
+        .ai-copy-btn.copied { opacity: 1; color: var(--lime); }
+        @media (hover: none) { .ai-copy-btn { opacity: 0.7; } }
+        .ai-status-pill {
+            display: inline-flex; align-items: center; gap: 7px;
+            font-size: 11px; font-family: "DM Mono", monospace; color: var(--txt2);
+            background: var(--bg3); border: 1px solid var(--border);
+            padding: 4px 11px; border-radius: 999px;
+        }
+        .ai-status-pill .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--txt3); }
+        .ai-status-pill.ok .dot { background: var(--lime); box-shadow: 0 0 8px var(--lime-glow); }
+        @media (max-width: 640px) { .ai-chat-card { height: 72vh; } }
+
     </style>
 </head>
 <body>
@@ -1360,6 +1502,7 @@
             <button class="nav-btn" onclick="showTab('clients',this)">Clients</button>
             <button class="nav-btn" onclick="showTab('tasks',this)">Tasks</button>
             <button class="nav-btn" onclick="showTab('receipt',this)">Receipt Hub</button>
+            <button class="nav-btn" onclick="showTab('aichat',this)">Mirage</button>
             <!--Commenting Seeting Tab as it's only for debugging-->
             <!--<button class="nav-btn" onclick="showTab('settings',this)">Settings</button>-->
         </nav>
@@ -1376,6 +1519,7 @@
         <button class="mobile-menu-item" id="mob-clients" onclick="showTabMob('clients')">Clients</button>
         <button class="mobile-menu-item" id="mob-tasks" onclick="showTabMob('tasks')">Tasks</button>
         <button class="mobile-menu-item" id="mob-receipt" onclick="showTabMob('receipt')">Receipt Hub</button>
+        <button class="mobile-menu-item" id="mob-aichat" onclick="showTabMob('aichat')">Mirage</button>
         <!--Commenting Seeting Tab as it's only for debugging-->
         <!--<button class="mobile-menu-item" id="mob-settings" onclick="showTabMob('settings')">Settings</button>-->
         <a class="mobile-menu-wa" href="https://wa.me/+919818704445" target="_blank" rel="noopener noreferrer">
@@ -1587,6 +1731,93 @@
                 </div>
             </div>
         </div>
+
+        <!-- AI CHATBOT -->
+        <div id="tab-aichat" class="tab-view">
+            <div class="section-hdr" style="margin-bottom:14px;">
+                <div class="section-title" style="font-size:18px;">Artificial Intelligence</div>
+                <span class="ai-status-pill" id="ai-status-pill"><span class="dot"></span><span id="ai-status-text">Not configured</span></span>
+            </div>
+
+            <!-- Sub-tabs: AI API | AI Chatbot -->
+            <div class="filters" style="margin-bottom:16px;">
+                <button class="filter-btn active" id="ai-subtab-api" onclick="aiShowPanel('api',this)">Mirage Settings</button>
+                <button class="filter-btn" id="ai-subtab-chat" onclick="aiShowPanel('chat',this)">Ask Mirage</button>
+            </div>
+
+            <!-- PANEL 1: AI API Settings → table: ai_details -->
+            <div id="ai-panel-api">
+                <div class="rcp-card">
+                    <div class="rcp-section">
+                        <div class="rcp-section-label">AI API Settings</div>
+                        <div class="rcp-grid">
+                            <div class="rcp-field">
+                                <label>Company Name <span style="color:#c85050">*</span></label>
+                                <input type="text" id="ai-company-name" placeholder="e.g. Google Gemini" autocomplete="off" />
+                            </div>
+                            <div class="rcp-field">
+                                <label>AI Model Name <span style="color:#c85050">*</span></label>
+                                <input type="text" id="ai-model-name" placeholder="e.g. gemini-2.0-flash" autocomplete="off" />
+                            </div>
+                        </div>
+                        <div class="rcp-field" style="margin-top:12px;">
+                            <label>AI API Url <span style="color:#c85050">*</span></label>
+                            <input type="text" id="ai-api-url" placeholder="https://generativelanguage.googleapis.com/v1beta" autocomplete="off" />
+                        </div>
+                        <div class="rcp-field" style="margin-top:12px;">
+                            <label>AI API Key <span style="color:#c85050">*</span></label>
+                            <div class="ai-key-wrap">
+                                <input type="password" id="ai-api-key" placeholder="Paste your Gemini API key" autocomplete="off" />
+                                <button type="button" class="ai-eye-btn" id="ai-eye-btn" onclick="aiToggleKey()" title="Show / hide key" aria-label="Show or hide API key">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div style="display:flex;justify-content:flex-end;margin-top:16px;">
+                            <button class="btn-ok" id="ai-save-btn" onclick="aiSaveDetails()">Save AI Details</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PANEL 2: AI Chatbot -->
+            <div id="ai-panel-chat" style="display:none;">
+                <div class="ai-chat-card">
+                    <div class="ai-chat-toolbar">
+                    <span class="ai-toolbar-title">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="var(--lime)" stroke="var(--lime)" stroke-width="1" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                        Vibe Check (Conversation)
+                    </span>
+                        <button type="button" class="ai-clear-btn" id="ai-clear-btn" onclick="aiClearChat()" title="Clear chat">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
+                            Clear chat
+                        </button>
+                    </div>
+                    <!-- To be removed after fixing it, that is to get data from Model(LLM) as well as Internet-->
+                    <div class="ai-chat-toolbar">
+                    <span class="ai-toolbar-title">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="var(--lime)" stroke="var(--lime)" stroke-width="1" stroke-linejoin="round" aria-hidden="true"></svg>
+                        Note: Need to enhance the feature, Mirage AI only provides generative text, will not render images & doesn't provides contempary data. It should get data from Model & Internet both.
+                    </span>
+                    </div>
+                    <!-- To be removed after fixing it, that is to get data from Model(LLM) as well as Internet-->
+                    <div class="ai-chat-msgs" id="ai-chat-msgs">
+                        <div class="ai-empty" id="ai-empty">
+                            <div class="ai-empty-icon"><svg width="34" height="34" viewBox="0 0 24 24" fill="var(--lime)" stroke="var(--lime)" stroke-width="1" stroke-linejoin="round" style="filter:drop-shadow(0 0 10px var(--lime-glow2));" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+                            <div>Mirage is ready, what's the priority for today?</div>
+                        </div>
+                    </div>
+                    <div class="ai-chat-inputrow">
+                        <textarea id="ai-chat-input" rows="1" placeholder="Type a message…" onkeydown="aiInputKey(event)" oninput="aiAutoGrow(this)"></textarea>
+                        <button class="ai-send-btn" id="ai-send-btn" onclick="aiSendMessage()">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                            Send
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </main>
 </div>
 
@@ -1913,6 +2144,7 @@
         if (tab === "tasks") renderTasks();
         if (tab === "settings") renderSettings();
         if (tab === "receipt") rcpInit();
+        if (tab === "aichat") aiInit();
         updateStats();
     }
     function showTabMob(tab) {
@@ -1941,6 +2173,7 @@
         if (tab === "tasks") renderTasks();
         if (tab === "settings") renderSettings();
         if (tab === "receipt") rcpInit();
+        if (tab === "aichat") aiInit();
         updateStats();
     }
 
@@ -3150,6 +3383,368 @@
             }
         }
     }
+
+
+    // ── AI CHATBOT ───────────────────────────────────────────────
+    // Table: ai_details (ai_company_name, ai_api_url, ai_api_key, ai_model_name)
+    var aiRow = null;          // currently loaded ai_details row (null = none yet)
+    var aiLoaded = false;      // settings fetched at least once
+    var aiMessages = [];       // [{role:"user"|"model", text:""}]
+    var aiBusy = false;
+
+    async function dbGetAiDetails() {
+        var rows = await sbFetch("/ai_details?select=*&limit=1");
+        return rows && rows.length ? rows[0] : null;
+    }
+    async function dbSaveAiDetails(company, url, key, model) {
+        var body = { ai_company_name: company, ai_api_url: url, ai_api_key: key, ai_model_name: model };
+        if (aiRow) {
+            // UPDATE existing row — prefer a primary-key column if the table has one
+            var filter;
+            if (aiRow.ai_id !== undefined)      filter = "ai_id=eq." + aiRow.ai_id;
+            else if (aiRow.id !== undefined)    filter = "id=eq." + aiRow.id;
+            else filter = "ai_company_name=eq." + encodeURIComponent(aiRow.ai_company_name);
+            var rows = await sbFetch("/ai_details?" + filter, {
+                method: "PATCH",
+                body: JSON.stringify(body),
+            });
+            return rows && rows[0] ? rows[0] : Object.assign({}, aiRow, body);
+        }
+        // INSERT first row
+        var ins = await sbFetch("/ai_details", { method: "POST", body: JSON.stringify(body) });
+        return ins && ins[0] ? ins[0] : body;
+    }
+
+    function aiShowPanel(panel, btn) {
+        document.getElementById("ai-panel-api").style.display = panel === "api" ? "" : "none";
+        document.getElementById("ai-panel-chat").style.display = panel === "chat" ? "" : "none";
+        document.getElementById("ai-subtab-api").classList.toggle("active", panel === "api");
+        document.getElementById("ai-subtab-chat").classList.toggle("active", panel === "chat");
+        if (panel === "chat") {
+            var box = document.getElementById("ai-chat-msgs");
+            box.scrollTop = box.scrollHeight;
+            var inp = document.getElementById("ai-chat-input");
+            if (inp) setTimeout(function () { inp.focus(); }, 80);
+        }
+    }
+
+    function aiUpdateStatusPill() {
+        var pill = document.getElementById("ai-status-pill");
+        var txt = document.getElementById("ai-status-text");
+        if (!pill || !txt) return;
+        if (aiRow && aiRow.ai_api_url && aiRow.ai_api_key) {
+            pill.classList.add("ok");
+            txt.textContent = (aiRow.ai_company_name || "AI") +
+                (aiRow.ai_model_name ? " \u00b7 " + aiRow.ai_model_name : "") + " connected";
+        } else {
+            pill.classList.remove("ok");
+            txt.textContent = "Not configured";
+        }
+    }
+
+    async function aiInit() {
+        if (aiLoaded) { aiUpdateStatusPill(); return; }
+        try {
+            showGlobalLoading(true);
+            aiRow = await dbGetAiDetails();
+            if (aiRow) {
+                document.getElementById("ai-company-name").value = aiRow.ai_company_name || "";
+                document.getElementById("ai-api-url").value = aiRow.ai_api_url || "";
+                document.getElementById("ai-api-key").value = aiRow.ai_api_key || "";
+                document.getElementById("ai-model-name").value = aiRow.ai_model_name || "";
+            }
+            aiLoaded = true;
+            // Land on the right panel: Chatbot when configured, AI API setup otherwise
+            aiShowPanel(aiRow && aiRow.ai_api_url && aiRow.ai_api_key ? "chat" : "api");
+        } catch (e) {
+            toast("Could not load AI settings: " + e.message, "error");
+        } finally {
+            showGlobalLoading(false);
+        }
+        aiUpdateStatusPill();
+    }
+
+    async function aiSaveDetails() {
+        var company = (document.getElementById("ai-company-name").value || "").trim();
+        var url = (document.getElementById("ai-api-url").value || "").trim();
+        var key = (document.getElementById("ai-api-key").value || "").trim();
+        var model = (document.getElementById("ai-model-name").value || "").trim();
+        if (!company) { toast("Please enter the company name.", "error"); document.getElementById("ai-company-name").focus(); return; }
+        if (!url)     { toast("Please enter the AI API URL.", "error"); document.getElementById("ai-api-url").focus(); return; }
+        if (!/^https:\/\//i.test(url)) { toast("API URL must start with https://", "error"); document.getElementById("ai-api-url").focus(); return; }
+        if (!key)     { toast("Please enter the AI API key.", "error"); document.getElementById("ai-api-key").focus(); return; }
+        if (!model)   { toast("Please enter the AI model name.", "error"); document.getElementById("ai-model-name").focus(); return; }
+
+        var btn = document.getElementById("ai-save-btn");
+        btn.disabled = true;
+        btn.textContent = aiRow ? "Updating…" : "Saving…";
+        try {
+            aiRow = await dbSaveAiDetails(company, url, key, model);
+            toast("\u2713 AI API details saved.", "success");
+            aiShowPanel("chat");
+        } catch (e) {
+            toast("Save failed: " + e.message, "error");
+        } finally {
+            btn.disabled = false;
+            btn.textContent = "Save AI Details";
+            aiUpdateStatusPill();
+        }
+    }
+
+    function aiToggleKey() {
+        var inp = document.getElementById("ai-api-key");
+        inp.type = inp.type === "password" ? "text" : "password";
+    }
+
+    // ── Chatbox helpers ──────────────────────────────────────────
+    function aiAutoGrow(el) {
+        el.style.height = "auto";
+        el.style.height = Math.min(el.scrollHeight, 110) + "px";
+    }
+    function aiInputKey(e) {
+        if (e.key === "Enter" && !e.shiftKey) {
+            e.preventDefault();
+            aiSendMessage();
+        }
+    }
+    function aiFormat(text) {
+        var s = esc(text);
+        s = s.replace(/```([\s\S]*?)```/g, function (m, c) { return "<code>" + c + "</code>"; });
+        s = s.replace(/`([^`]+)`/g, "<code>$1</code>");
+        s = s.replace(/\*\*([^*]+)\*\*/g, "<b>$1</b>");
+        return s;
+    }
+    var AI_COPY_SVG = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+    var AI_CHECK_SVG = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>';
+    var AI_EMPTY_HTML =
+        '<div class="ai-empty" id="ai-empty">' +
+        '<div class="ai-empty-icon"><svg width="34" height="34" viewBox="0 0 24 24" fill="var(--lime)" stroke="var(--lime)" stroke-width="1" stroke-linejoin="round" style="filter:drop-shadow(0 0 10px var(--lime-glow2));" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>' +
+        "<div>Athena AI is ready, what's the priority for today?</div>" +
+        "</div>";
+
+    function aiAppendBubble(role, html, isError, rawText) {
+        var box = document.getElementById("ai-chat-msgs");
+        var empty = document.getElementById("ai-empty");
+        if (empty) empty.remove();
+        var wrap = document.createElement("div");
+        wrap.className = "ai-msg " + (role === "user" ? "user" : "bot") + (isError ? " error" : "");
+        wrap.innerHTML =
+            '<div class="ai-avatar">' + (role === "user" ? "U" : "AI") + "</div>" +
+            '<div class="ai-bubble-wrap"><div class="ai-bubble">' + html + "</div></div>";
+        if (rawText) aiAttachCopy(wrap, rawText);
+        box.appendChild(wrap);
+        box.scrollTop = box.scrollHeight;
+        return wrap;
+    }
+    // Adds (or refreshes) a copy button under a message bubble
+    function aiAttachCopy(wrap, text) {
+        wrap._raw = text;
+        if (wrap.querySelector(".ai-copy-btn")) return;
+        var bw = wrap.querySelector(".ai-bubble-wrap");
+        if (!bw) return;
+        var btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "ai-copy-btn";
+        btn.title = "Copy message";
+        btn.innerHTML = AI_COPY_SVG + " Copy";
+        btn.onclick = function () { aiCopyText(wrap._raw, btn); };
+        bw.appendChild(btn);
+    }
+    function aiCopyText(text, btn) {
+        function done(ok) {
+            if (!ok) { toast("Could not copy to clipboard.", "error"); return; }
+            btn.classList.add("copied");
+            btn.innerHTML = AI_CHECK_SVG + " Copied";
+            clearTimeout(btn._t);
+            btn._t = setTimeout(function () {
+                btn.classList.remove("copied");
+                btn.innerHTML = AI_COPY_SVG + " Copy";
+            }, 1400);
+        }
+        function fallback() {
+            var ta = document.createElement("textarea");
+            ta.value = text;
+            ta.style.position = "fixed";
+            ta.style.opacity = "0";
+            document.body.appendChild(ta);
+            ta.select();
+            var ok = false;
+            try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+            ta.remove();
+            done(ok);
+        }
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(function () { done(true); }, fallback);
+        } else {
+            fallback();
+        }
+    }
+    function aiClearChat() {
+        if (aiBusy) { toast("Please wait for the current reply to finish.", "error"); return; }
+        if (!aiMessages.length) { toast("Chat is already empty.", "info"); return; }
+        aiMessages = [];
+        document.getElementById("ai-chat-msgs").innerHTML = AI_EMPTY_HTML;
+        toast("\u2713 Chat cleared.", "success");
+        var inp = document.getElementById("ai-chat-input");
+        if (inp) inp.focus();
+    }
+    function aiShowTyping() {
+        return aiAppendBubble(
+            "model",
+            '<span class="ai-working">' +
+            '<span class="ai-typing"><span></span><span></span><span></span></span>' +
+            '<span class="ai-working-label">Working on request&hellip;</span>' +
+            "</span>"
+        );
+    }
+
+    // ── Gemini API call ──────────────────────────────────────────
+    // Build the final endpoint from the saved base URL + model name.
+    // Supported url shapes:
+    //   https://.../v1beta                                → + /models/{model}:generateContent
+    //   https://.../v1beta/models                         → + /{model}:generateContent
+    //   https://.../models/{model}:generateContent        → used as-is (model already embedded)
+    //   any url containing the literal {model} placeholder → substituted
+    function aiBuildEndpoint(url, model) {
+        var u = (url || "").trim().replace(/\/+$/, "");
+        if (u.indexOf("{model}") !== -1) return u.split("{model}").join(model || "");
+        if (/:generateContent/i.test(u)) return u;
+        if (!model) return u;
+        if (/\/models$/i.test(u)) return u + "/" + encodeURIComponent(model) + ":generateContent";
+        return u + "/models/" + encodeURIComponent(model) + ":generateContent";
+    }
+
+    async function aiCallGemini(url, key, history) {
+        var contents = history.map(function (m) {
+            return { role: m.role, parts: [{ text: m.text }] };
+        });
+
+        async function doFetch(withImageModality) {
+            var body = { contents: contents };
+            // Ask the model to return images as well as text. Image-capable
+            // models (gemini-2.5-flash-image, gemini-2.0-flash-preview-image-
+            // generation, ...) will NOT return images unless this is set.
+            if (withImageModality) {
+                body.generationConfig = { responseModalities: ["TEXT", "IMAGE"] };
+            }
+            var res = await fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "x-goog-api-key": key,
+                },
+                body: JSON.stringify(body),
+            });
+            var data;
+            try { data = await res.json(); } catch (e) { data = null; }
+            return { res: res, data: data };
+        }
+
+        // First try WITH image output requested…
+        var r = await doFetch(true);
+        if (!r.res.ok) {
+            var errMsg = (r.data && r.data.error && r.data.error.message) || "";
+            // …text-only models reject responseModalities with a 400 —
+            // retry the same request without it.
+            if (r.res.status === 400 && /modalit|multi-?modal|image/i.test(errMsg)) {
+                console.warn("Model rejected image modality, retrying text-only:", errMsg);
+                r = await doFetch(false);
+            }
+        }
+        if (!r.res.ok) {
+            var msg = (r.data && r.data.error && r.data.error.message) || r.res.statusText || ("HTTP " + r.res.status);
+            throw new Error(msg);
+        }
+
+        // Inspect this in DevTools (F12 → Console) if images are missing.
+        console.debug("Gemini raw response:", r.data);
+
+        var text = "";
+        var images = [];
+        var candidates = (r.data && r.data.candidates) || [];
+        candidates.forEach(function (cand, ci) {
+            var parts = (cand && cand.content && cand.content.parts) || [];
+            parts.forEach(function (p) {
+                if (ci === 0 && p.text) text += p.text;
+                // Gemini image output: inlineData (camelCase) or inline_data (snake_case)
+                var inline = p.inlineData || p.inline_data;
+                if (inline && inline.data) {
+                    images.push({
+                        mimeType: inline.mimeType || inline.mime_type || "image/png",
+                        data: inline.data,
+                    });
+                }
+            });
+        });
+        text = text.trim();
+        if (!text && !images.length) throw new Error("Empty response from the AI API.");
+        return { text: text, images: images };
+    }
+
+    // Builds bubble HTML from a reply's text + generated images
+    function aiReplyHtml(text, images) {
+        var html = text ? aiFormat(text) : "";
+        (images || []).forEach(function (img) {
+            html +=
+                '<img class="ai-gen-img" alt="AI generated image" src="data:' +
+                img.mimeType + ";base64," + img.data + '" ' +
+                'onclick="aiOpenImage(this.src)" />';
+        });
+        return html;
+    }
+
+    // Opens a generated image full-size in a new tab
+    function aiOpenImage(src) {
+        var w = window.open("", "_blank");
+        if (!w) return;
+        w.document.write(
+            '<body style="margin:0;background:#111;display:flex;align-items:center;justify-content:center;min-height:100vh;">' +
+            '<img src="' + src + '" style="max-width:100%;max-height:100vh;" /></body>'
+        );
+        w.document.close();
+    }
+
+    async function aiSendMessage() {
+        if (aiBusy) return;
+        var input = document.getElementById("ai-chat-input");
+        var msg = (input.value || "").trim();
+        if (!msg) return;
+        if (!aiRow || !aiRow.ai_api_url || !aiRow.ai_api_key) {
+            toast("Save your AI API details first.", "error");
+            document.getElementById("ai-company-name").focus();
+            return;
+        }
+        input.value = "";
+        aiAutoGrow(input);
+
+        aiMessages.push({ role: "user", text: msg });
+        aiAppendBubble("user", aiFormat(msg), false, msg);
+
+        aiBusy = true;
+        document.getElementById("ai-send-btn").disabled = true;
+        var typing = aiShowTyping();
+        try {
+            var endpoint = aiBuildEndpoint(aiRow.ai_api_url, aiRow.ai_model_name);
+            var reply = await aiCallGemini(endpoint, aiRow.ai_api_key, aiMessages);
+            aiMessages.push({ role: "model", text: reply.text || "[image]" });
+            // The "Working on request…" bubble stays visible until this point,
+            // then is replaced by the complete response (text + any images) at once.
+            typing.querySelector(".ai-bubble").innerHTML = aiReplyHtml(reply.text, reply.images);
+            if (reply.text) aiAttachCopy(typing, reply.text);
+        } catch (e) {
+            // Drop the failed user turn from history so a retry starts clean
+            aiMessages.pop();
+            typing.classList.add("error");
+            typing.querySelector(".ai-bubble").textContent = "\u26A0 " + e.message;
+        } finally {
+            aiBusy = false;
+            document.getElementById("ai-send-btn").disabled = false;
+            var box = document.getElementById("ai-chat-msgs");
+            box.scrollTop = box.scrollHeight;
+            input.focus();
+        }
+    }
+
 
     // ── AUTO REFRESH ─────────────────────────────────────────────
     setInterval(function () {
