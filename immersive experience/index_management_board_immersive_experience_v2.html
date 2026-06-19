@@ -3581,9 +3581,14 @@
     }
     function aiClearChat() {
         if (aiBusy) { toast("Please wait for the current reply to finish.", "error"); return; }
-        if (!aiMessages.length) { toast("Chat is already empty.", "info"); return; }
+        var box = document.getElementById("ai-chat-msgs");
+        // Failed turns are popped from aiMessages but their bubbles (the user
+        // message + the error reply) stay on screen — so check the DOM too,
+        // not just the in-memory history, or "Clear" can silently no-op.
+        var hasVisibleMsgs = box.querySelector(".ai-msg") !== null;
+        if (!aiMessages.length && !hasVisibleMsgs) { toast("Chat is already empty.", "info"); return; }
         aiMessages = [];
-        document.getElementById("ai-chat-msgs").innerHTML = AI_EMPTY_HTML;
+        box.innerHTML = AI_EMPTY_HTML;
         toast("\u2713 Chat cleared.", "success");
         var inp = document.getElementById("ai-chat-input");
         if (inp) inp.focus();
